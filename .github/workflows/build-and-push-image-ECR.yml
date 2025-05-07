@@ -116,17 +116,17 @@ jobs:
         ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
         ECR_REPOSITORY: counter-service-exercise
         IMAGE_TAG: ${{ steps.next_version.outputs.tag }}
-     run: |
-       # Save PEM key to file and set permisssions
-       echo "$EC2_PEM_KEY" > ec2.pem
-       chmod 400 ec2.pem
+      run: |
+        # Save PEM key to file and set permisssions
+        echo "$EC2_PEM_KEY" > ec2.pem
+        chmod 400 ec2.pem
 
-       #SSH SCP commands
-       SSH_COMMAND="ssh -i ec2.pem -o StrictHostKeyChecking=no $EC2_USER@$EC2_HOST"
-       SCP_COMMAND="scp -i ec2.pem -o StrictHostKeyChecking=no"
+        #SSH SCP commands
+        SSH_COMMAND="ssh -i ec2.pem -o StrictHostKeyChecking=no $EC2_USER@$EC2_HOST"
+        SCP_COMMAND="scp -i ec2.pem -o StrictHostKeyChecking=no"
 
-       #Login to the Docker Registry (ECR)
-      $SSH_COMMAND "aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin $ECR_REGISTRY"
+        #Login to the Docker Registry (ECR)
+        $SSH_COMMAND "aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin $ECR_REGISTRY"
 
         # Copy docker-compose.yml to EC2 server
         $SCP_COMMAND docker-compose.yml $EC2_USER@$EC2_HOST:/home/ubuntu/docker/
