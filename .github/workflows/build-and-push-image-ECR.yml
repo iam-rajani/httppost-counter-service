@@ -38,7 +38,8 @@ jobs:
         NEXT_TAG=$(echo $LATEST_TAG | awk -F. '{print $1"."$2"."$3+1}')
         
         # Output the next version
-        echo "::set-output name=tag::$NEXT_TAG"
+        #echo "::set-output name=tag::$NEXT_TAG"
+        echo "tag=$NEXT_TAG" >> $GITHUB_OUTPUT
         echo "Next version: $NEXT_TAG"
 
 ################################################################
@@ -66,7 +67,7 @@ jobs:
       with:
         aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
         aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-        aws-region: us-east-1
+        aws-region: us-east-1  
 
     - name: Login to Amazon ECR
       id: login-ecr
@@ -75,9 +76,10 @@ jobs:
     - name: Extract repository name
       id: repo-name
       run: |
-        REPO_NAME="${GITHUB_REPOSITORY##*/}"
+        REPO_NAME=${GITHUB_REPOSITORY##*/}
         echo "REPO_NAME=$REPO_NAME" >> $GITHUB_ENV
-        echo "::set-output name=repo_name::$REPO_NAME"
+        #echo "::set-output name=repo_name::$REPO_NAME"
+        echo "repo_name=$REPO_NAME" >> $GITHUB_OUTPUT
 
     - name: Build Docker image
       env:
