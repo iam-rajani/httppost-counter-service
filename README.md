@@ -49,3 +49,5 @@ This is because the application, running inside a Docker container, does not hav
 There is a mismatch between the user ID (UID) of the process inside the container and the ownership or permissions of the mounted volume on the host machine.
 Just give ./data full permissions (sudo chmod -R 777 ./data).
 Push the changes to rajani-patch-1 and verify CI/CD works.
+- open the browser and check : `http:<ec2-public-ip>:80`
+- try to send a POST request to the app: `curl -X POST http://<ec2-public-ip>:8080`
