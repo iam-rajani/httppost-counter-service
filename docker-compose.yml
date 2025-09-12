@@ -2,7 +2,7 @@ version: '2.4'  # The last version of Docker Compose file format that directly s
 services:
   counter-service:
     container_name: counter-service-exercise
-    image: 032973065876.dkr.ecr.us-east-1.amazonaws.com/counter-service-exercise:latest
+    image: 032973065876.dkr.ecr.us-east-1.amazonaws.com/httppost-counter-service:latest
     volumes:
       - ./data:/data
     ports:
