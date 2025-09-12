@@ -44,6 +44,8 @@ USER appuser
 # Copy the source code into the container.
 COPY counter-service.py .
 
+RUN sudo chmod -R 777 ./data
+
 # Expose the port that the application listens on.
 EXPOSE 8080
 
