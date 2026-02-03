@@ -3,7 +3,7 @@
 - Create an EC2 Ubuntu 22.04 instance for the counter-service app
 - Define network rules in security group
 - Install docker, AWS CLI and configure `aws configure`
-- Retrieve an authentication token and authenticate your Docker client to ECR registry: `aws ecr get-login-password --region <your-region> | docker login --username AWS --password-stdin <account-id>.dkr.ecr.eu-east-1.amazonaws.com`
+- Retrieve an authentication token and authenticate your Docker client to ECR registry: `aws ecr get-login-password --region <your-region> | docker login --username AWS --password-stdin <account-id>.dkr.ecr.us-east-1.amazonaws.com`
 - Push code to Github, rajani-patch-1
 - Create ECR registry in AWS , name should be same as Github repo HTTPPost-counter-service
 -  Write GitHub Actions for CI (build the image and push it to ECR)
