@@ -24,7 +24,7 @@
         - GITHUB_TOKEN: ${{ secrets.ACCESS_TOKEN_2 }}
         - aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
         - aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-- Push the GitHub Actions code to the rajani-patch-1 branch and see if the image will be delivered to ECR by executing GutHub Action.
+- Push the GitHub Actions code to the rajani-patch-1 branch and see if the image will be delivered to ECR by executing GutHub Actions.
 - Add the Sonar Cloud and Snyk tests:
         - Login with your GitHub account to Sonar Cloud.
         - Create an Organization (optionally).
