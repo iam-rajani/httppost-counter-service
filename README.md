@@ -40,14 +40,11 @@
 - configure SNYK_TOKEN for code vulnerabilities  https://docs.snyk.io/snyk-api/revoking-and-regenerating-snyk-api-tokens
   
 - Write GitHub Actions for CD (pull the image from the ECR to the EC2 instance and run it).
-      - save EC2_PEM_KEY and EC2_HOST as secrets to the Github repository and copy docker-compose.yml from the GitHub repository to the EC2 server.
+      - save EC2_PEM_KEY and EC2_HOST as secrets to the Github repository and copy compose.yaml from the GitHub repository to the EC2 server.
   
-If you try to POST to the app now, you will see an error:
-PermissionError: [Errno 13] Permission denied: ‘/data/counter.txt’
+The CI workflow runs `docker compose -f compose.yaml up -d` on the EC2 instance with `HOST_PORT=80`, `ECR_REGISTRY` and `IMAGE_TAG` set, so the app is reachable on port 80.
 
-This is because the application, running inside a Docker container, does not have the necessary permissions to write to the file /data/counter.txt.
-There is a mismatch between the user ID (UID) of the process inside the container and the ownership or permissions of the mounted volume on the host machine.
-Just give ./data full permissions (sudo chmod -R 777 ./data).
+Counter data is stored in the named volume `counter-data` mounted at `/data`. The image creates `/data` owned by the non-privileged `appuser`, so no `chmod 777` is required. To reset the counter, run `docker compose down -v`.
 Push the changes to rajani-patch-1 and verify CI/CD works.
 - open the browser and check : `http:<ec2-public-ip>:80`
-- try to send a POST request to the app: `curl -X POST http://<ec2-public-ip>:8080`
+- try to send a POST request to the app: `curl -X POST http://<ec2-public-ip>:80`

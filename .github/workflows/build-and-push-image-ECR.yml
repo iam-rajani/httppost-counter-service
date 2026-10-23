@@ -144,14 +144,17 @@ jobs:
         SSH_COMMAND="ssh -i ec2.pem -o StrictHostKeyChecking=no $EC2_USER@$EC2_HOST"
         SCP_COMMAND="scp -i ec2.pem -o StrictHostKeyChecking=no"
 
+        # Ensure the deploy directory exists on the EC2 instance
+        $SSH_COMMAND "mkdir -p /home/ubuntu/docker"
+
         #Login to the Docker Registry (ECR)
         $SSH_COMMAND "aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin $ECR_REGISTRY"
 
-        # Copy docker-compose.yml to EC2 server
-        $SCP_COMMAND docker-compose.yml $EC2_USER@$EC2_HOST:/home/ubuntu/docker/
+        # Copy compose.yaml to EC2 server
+        $SCP_COMMAND compose.yaml $EC2_USER@$EC2_HOST:/home/ubuntu/docker/
 
         # Pull and run the Docker container on EC2
-        $SSH_COMMAND "cd /home/ubuntu/docker/ && docker pull $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG && docker compose -f docker-compose.yml up -d --force-recreate"
+        $SSH_COMMAND "cd /home/ubuntu/docker/ && docker pull $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG && HOST_PORT=80 ECR_REGISTRY=$ECR_REGISTRY IMAGE_TAG=$IMAGE_TAG docker compose -f compose.yaml up -d --force-recreate"
 
         # Cleanup PEM key
         rm -f ec2.pem

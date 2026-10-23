@@ -38,6 +38,9 @@ RUN --mount=type=cache,target=/root/.cache/pip \
     --mount=type=bind,source=requirements.txt,target=requirements.txt \
     python -m pip install -r requirements.txt
 
+# Create the data directory the app writes to, owned by the non-privileged user.
+RUN mkdir -p /data && chown appuser:appuser /data
+
 # Switch to the non-privileged user to run the application.
 USER appuser
 
@@ -48,4 +51,4 @@ COPY counter-service.py .
 EXPOSE 8080
 
 # Run the application.
-CMD ["gunicorn", "counter-service:app", "--bind","0.0.0.0:8080 ","--access-logfile","-","--error-logfile","-"]
+CMD ["gunicorn", "counter-service:app", "--bind", "0.0.0.0:8080", "--access-logfile", "-", "--error-logfile", "-"]
